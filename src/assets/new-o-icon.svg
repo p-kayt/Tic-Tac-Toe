@@ -8,5 +8,5 @@
       </feMerge>
     </filter>
   </defs>
-  <circle cx="50" cy="50" r="40" stroke="orange" stroke-width="10" fill="none" filter="url(#glow)"/>
+  <circle cx="50" cy="50" r="40" stroke="red" stroke-width="10" fill="none" filter="url(#glow)"/>
 </svg>
