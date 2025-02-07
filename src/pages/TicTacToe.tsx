@@ -132,6 +132,9 @@ const TicTacToe = () => {
             />
           ))}
         </div>
+        <button className="hidden-reset" onClick={() => resetGame()}>
+          Reset
+        </button>
         <div className="result">
           <div className="turn">{playerTurn === PLAYER_X ? "X" : "O"} turn</div>
           {winner && <div className="winner">{winner} win</div>}
