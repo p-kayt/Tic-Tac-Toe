@@ -40,3 +40,4 @@ To get started with the Tic Tac Toe app, follow these steps:
    ```sh
    npm run preview
    ```
+## Deployed link: https://peppy-gecko-7c654a.netlify.app
