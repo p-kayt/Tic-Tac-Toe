@@ -1,0 +1,12 @@
+body {
+  height: 100dvh;
+  background-color: rgba(0, 0, 0, 0.845);
+  font-family: "Roboto", sans-serif;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
