@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import IconX from "../assets/new-x-icon.svg";
 import IconO from "../assets/new-o-icon.svg";
+import InfoIcon from "../assets/circle-info-solid.svg";
 import "../styles/styles.scss";
 
 const PLAYER_X = "X";
@@ -28,7 +29,14 @@ const TicTacToe = () => {
   const [winner, setWinner] = React.useState<string | null>(null);
   const [draw, setDraw] = React.useState<boolean>(false);
   const [matchHistory, setMatchHistory] = React.useState<string[]>([]);
+  const [isRuleModalOpen, setIsRuleModalOpen] = React.useState<boolean>(false);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsRuleModalOpen(true);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
   //handle click
   const handleClick = (index: number) => {
     if (tiles[index] !== null || winningCombination || draw) return;
@@ -100,11 +108,17 @@ const TicTacToe = () => {
     );
   };
 
-  return (
-    <>
-      <div className="header">Welcome to the game of Tic Tac Toe</div>
-      <div className="main">
-        <div className="rule">
+  const RulesModal = ({
+    isOpen,
+    onClose,
+  }: {
+    isOpen: boolean;
+    onClose: () => void;
+  }) => {
+    if (!isOpen) return null;
+    return (
+      <div className="modal-overlay" onClick={onClose}>
+        <div className="modal-content" onClick={(e) => e.stopPropagation()}>
           <h2>Rules</h2>
           <ul>
             <li>The game is played on a 3x3 grid.</li>
@@ -121,24 +135,52 @@ const TicTacToe = () => {
               the game is a draw.
             </li>
           </ul>
+          <button onClick={onClose}>Close</button>
         </div>
-        <div className="board">
-          {tiles.map((value, index) => (
-            <Tile
-              key={index}
-              value={value}
-              onClick={() => handleClick(index)}
-              isWinningTile={winningCombination?.includes(index) || false}
-            />
-          ))}
+      </div>
+    );
+  };
+
+  return (
+    <>
+      <div className="header">Welcome to the game of Tic Tac Toe</div>
+      <div className="main">
+        <div className="top-section">
+          <button className="reset" onClick={() => resetGame()}>
+            Reset
+          </button>
+
+          {winner || draw ? (
+            <div className="winner">
+              {winner ? `Winner: ${winner}` : "Draw"}
+            </div>
+          ) : (
+            <div className="turn">
+              {playerTurn === PLAYER_X ? "X" : "O"} turn
+            </div>
+          )}
+          <img
+            src={InfoIcon}
+            alt="Info"
+            className="info-icon"
+            onClick={() => setIsRuleModalOpen(!isRuleModalOpen)}
+          />
+          <RulesModal
+            isOpen={isRuleModalOpen}
+            onClose={() => setIsRuleModalOpen(false)}
+          />
         </div>
-        <button className="hidden-reset" onClick={() => resetGame()}>
-          Reset
-        </button>
-        <div className="result">
-          <div className="turn">{playerTurn === PLAYER_X ? "X" : "O"} turn</div>
-          {winner && <div className="winner">{winner} win</div>}
-          {draw && <div className="winner">It's a draw!</div>}
+        <div className="game-section">
+          <div className="board">
+            {tiles.map((value, index) => (
+              <Tile
+                key={index}
+                value={value}
+                onClick={() => handleClick(index)}
+                isWinningTile={winningCombination?.includes(index) || false}
+              />
+            ))}
+          </div>
           <div className="history">
             <h3>Match History</h3>
             <ul className="history-list">
@@ -150,11 +192,10 @@ const TicTacToe = () => {
             </ul>
           </div>
         </div>
-      </div>
-      <div className="footer">
-        <button className="reset" onClick={() => resetGame()}>
+
+        {/* <button className="hidden-reset" onClick={() => resetGame()}>
           Reset
-        </button>
+        </button> */}
       </div>
     </>
   );
