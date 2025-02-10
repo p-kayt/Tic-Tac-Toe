@@ -34,7 +34,7 @@ const TicTacToe = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsRuleModalOpen(true);
-    }, 1500);
+    }, 3000);
     return () => clearTimeout(timer);
   }, []);
   //handle click
